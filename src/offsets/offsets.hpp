@@ -12,9 +12,13 @@ namespace offsets {
 	constexpr std::ptrdiff_t m_pEntity = 0x10;
 	constexpr std::ptrdiff_t m_AttributeManager = 0x1148;
 	constexpr std::ptrdiff_t m_Item = 0x50;
+	constexpr std::ptrdiff_t m_fFlags = 0x63;
+	constexpr std::ptrdiff_t m_flFlashMaxAlpha = 0x1408;
 
 	constexpr std::ptrdiff_t dwEntityList = 0x1A1F670;
 	constexpr std::ptrdiff_t dwLocalPlayerPawn = 0x1874040;
 	constexpr std::ptrdiff_t dwViewAngles = 0x1A93300;
 	constexpr std::ptrdiff_t dwViewMatrix = 0x1A89070;
+
+	constexpr std::ptrdiff_t dwForceJump = 0x186CD50;
 }

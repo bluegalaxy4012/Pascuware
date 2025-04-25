@@ -4,6 +4,8 @@ namespace config
 	inline bool activeMenu = false;
 	inline bool activeESP = false;
 	inline bool activeTriggerbot = false;
+	inline bool activeBunnyhop = false;
+    inline bool activeNoFlash = false;
 
 
     inline struct ScreenSize {

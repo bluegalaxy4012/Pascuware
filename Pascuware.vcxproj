@@ -159,11 +159,13 @@
     <ClInclude Include="ext\imgui\imstb_rectpack.h" />
     <ClInclude Include="ext\imgui\imstb_textedit.h" />
     <ClInclude Include="ext\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\misc\bunnyhop.hpp" />
     <ClInclude Include="src\config\config.hpp" />
     <ClInclude Include="src\esp\esp.hpp" />
     <ClInclude Include="src\game\game.hpp" />
     <ClInclude Include="src\math\math.hpp" />
     <ClInclude Include="src\mem\mem.h" />
+    <ClInclude Include="src\misc\noflash.hpp" />
     <ClInclude Include="src\offsets\offsets.hpp" />
     <ClInclude Include="src\pascuware\pascuware.hpp" />
     <ClInclude Include="src\render\render.hpp" />

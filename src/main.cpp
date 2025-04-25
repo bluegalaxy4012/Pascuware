@@ -14,10 +14,6 @@
 
 
 
-//#define _CRT_SECURE_NO_WARNINGS
-
-
-
 void UpdateWindowInteractivity(HWND hwnd, bool allowInteraction) {
     LONG exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
 
@@ -172,10 +168,6 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
     }
 
 
-
-    //std::thread(InputThread).detach();
-    //std::thread(ESPThread).detach();
-    //std::thread(TriggerbotThread).detach();
 
 
     while (config::running)

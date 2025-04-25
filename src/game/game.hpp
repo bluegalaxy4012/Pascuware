@@ -11,7 +11,7 @@ namespace game
     inline view_matrix_t view_matrix = {};
     inline Vector3 localPosition = {}, position = {}, centerPosition = {}, headPosition = {};
     inline uintptr_t listEntry = 0, controller = 0, pawnListEntry = 0, pawn = 0;
-    inline uint32_t pawnHandle = 0;
+    inline uint32_t pawnHandle = 0, flags = 0;
     inline int team = 0, health = 0;
     inline float distanceToPlayer = 0.0f;
     inline Vector3 centerPos = {}, feetPos = {}, headPos = {};

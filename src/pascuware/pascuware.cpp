@@ -8,6 +8,8 @@
 #include "../mem/mem.h"
 #include "../offsets/offsets.hpp"
 #include "../esp/esp.hpp"
+#include "../misc/bunnyhop.hpp"
+#include "../misc/noflash.hpp"
 
 using namespace game;
 
@@ -44,26 +46,28 @@ void pascuware::Run()
 
 	localPosition = memory::Read<Vector3>(localPlayerPawn + offsets::m_vOldOrigin);
 
-	render::DrawTextColored(100, 100, "Running", { 255, 125, 125, 255 });
 
 
 	if (config::activeESP)
 		esp::Run();
 
-	//std::string a = std::to_string(config::activeTriggerbot) + " " + std::to_string(config::activeESP);
-	char buffer[100];
-	sprintf_s(buffer, "ESP: %d Triggerbot: %d", config::activeESP, config::activeTriggerbot);
-
-	//render::DrawTextColored(300, 100, "esp ran", { 255, 125, 125, 255 });
-
-	if (config::activeTriggerbot &&  ( triggerbot::key == -1 || ( GetAsyncKeyState(triggerbot::key) & 1 ) ))
+	if (config::activeTriggerbot &&  ( triggerbot::key == -1 || ( GetAsyncKeyState(triggerbot::key) != 0 ) ))
 		triggerbot::Run();
 
-	//render::DrawTextColored(500, 100, "trigger ran", { 255, 125, 125, 255 });
+	if (config::activeBunnyhop && (GetAsyncKeyState(VK_SPACE) & 0x8000))
+		bunnyhop::Run();
 
-	render::DrawTextColored(800, 200, buffer, { 255, 125, 125, 255 });
+	if (config::activeNoFlash)
+		noflash::Run();
+	else noflash::Disable();
 
 
+	int x_debugDraw = config::screenSize.GetWidth() * 3 / 4;
+	render::DrawTextColored(x_debugDraw, 5, "Running", { 255, 125, 125, 255 });
+
+	char buffer[100];
+	sprintf_s(buffer, "ESP: %d Triggerbot: %d, Bunnyhop: %d, NoFlash: %d", config::activeESP, config::activeTriggerbot, config::activeBunnyhop, config::activeNoFlash);
+	render::DrawTextColored(x_debugDraw, 20, buffer, { 255, 125, 125, 255 });
 
 
 	return;
@@ -83,9 +87,14 @@ void pascuware::RunMenu()
 		{
 			ImGui::Checkbox("Triggerbot", &config::activeTriggerbot);
 
-			if (ImGui::Combo("Triggerbot Key", &triggerbot::key, "Automatic\0Left Alt\0"))
+			if (triggerbot::key == -1)
+				triggerbot::keyIndex = 0;
+			else if (triggerbot::key == VK_LMENU)
+				triggerbot::keyIndex = 1;
+
+			if (ImGui::Combo("Triggerbot Key", &triggerbot::keyIndex, "Automatic\0Left Alt\0"))
 			{
-				switch (triggerbot::key)
+				switch (triggerbot::keyIndex)
 				{
 					case 0:
 						triggerbot::key = -1;
@@ -99,6 +108,13 @@ void pascuware::RunMenu()
 
             ImGui::InputInt("Triggerbot Delay(ms)", (int*)&triggerbot::delay, 0, 0, ImGuiInputTextFlags_None);
 			
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Misc"))
+		{
+			ImGui::Checkbox("Bunnyhop", &config::activeBunnyhop);
+			ImGui::Checkbox("No Flash", &config::activeNoFlash);
 			ImGui::EndTabItem();
 		}
 
