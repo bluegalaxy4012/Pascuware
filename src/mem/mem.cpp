@@ -1,5 +1,38 @@
 #include "mem.h"
 
+bool memory::InitializeDriver(const wchar_t* processName, const wchar_t* driverName)
+{
+	pId = memory::GetProcessId(processName);
+	if (pId == 0)
+	{
+		return false;
+	}
+	gHandle = CreateFile(driverName, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (gHandle == INVALID_HANDLE_VALUE)
+	{
+		return false;
+		
+
+	}
+	if (!memory::driver::attach(gHandle, pId))
+	{
+		CloseHandle(gHandle);
+		gHandle = nullptr;
+		return false;
+	}
+	return true;
+}
+
+void memory::CleanupDriver()
+{
+	if (gHandle && gHandle != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(gHandle);
+		gHandle = nullptr;
+	}
+	pId = 0;
+}
+
 uintptr_t memory::GetProcessId(const wchar_t* process)
 {
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);

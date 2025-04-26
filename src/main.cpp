@@ -153,14 +153,20 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 
 
 
-    const DWORD pid = memory::GetProcessId(L"cs2.exe");
-    if (!pid)
-    {
-        MessageBoxA(0, "Process not found", "Error", MB_OK);
-        return 1;
-    }
+    //const DWORD pid = memory::GetProcessId(L"cs2.exe");
+    //if (!pid)
+    //{
+    //    MessageBoxA(0, "Process not found", "Error", MB_OK);
+    //    return 1;
+    //}
 
-    game::clientBase = memory::GetModuleBaseAddress(pid, L"client.dll");
+	if (!memory::InitializeDriver(L"cs2.exe"))
+	{
+		MessageBoxA(0, "Driver/Process not found", "Error", MB_OK);
+		return 1;
+	}
+
+    game::clientBase = memory::GetModuleBaseAddress(memory::pId, L"client.dll");
     if (!game::clientBase)
     {
         MessageBoxA(0, "Module not found", "Error", MB_OK);
@@ -222,6 +228,8 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
     if (device) device->Release();
     if (hwnd) DestroyWindow(hwnd);
     if (wc.hInstance) UnregisterClass(wc.lpszClassName, wc.hInstance);
+    
+    memory::CleanupDriver();
 
     return 0;
 }
